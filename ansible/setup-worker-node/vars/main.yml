@@ -1,0 +1,3 @@
+---
+# vars file for setup-master-node
+key_location: /mnt/c/Users/ahmet/Downloads/DeveOps/exercise/maker-cluster/ansible/key.sh
