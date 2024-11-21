@@ -1,3 +1,9 @@
+locals {
+  worker_node_list = join("\n", [for instance in aws_instance.worker_node : "ubuntu@${instance.public_ip}"])
+}
+
 output "instance_ids" {
-  value = format("ubuntu@%s ansible_user=ubuntu", aws_instance.master_node.public_ip)
+  value = format("[Master]\nubuntu@%s ansible_user=ubuntu\n\n\n[Worker]\n%s", 
+                  aws_instance.master_node.public_ip, 
+                  local.worker_node_list)
 }
