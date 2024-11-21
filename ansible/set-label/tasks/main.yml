@@ -1,0 +1,18 @@
+---
+# tasks file for set-label
+  - name: It moves cluster config /etc/kubernetes to $HOME/.kube/ because kubectl look at this location. 
+    ansible.builtin.shell:
+      cmd: |
+        mkdir -p $HOME/.kube
+        sudo cp /etc/kubernetes/kubelet.conf $HOME/.kube/config
+        sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+  - name: Kubectl Label Node
+    ansible.builtin.copy:
+      src: /mnt/c/Users/ahmet/Downloads/DeveOps/exercise/maker-cluster/ansible/layer.sh
+      dest: $HOME/.kube/layer.sh
+
+  - name: Run layer.sh
+    ansible.builtin.shell:
+      cmd: cd $HOME/.kube/ && sudo bash layer.sh
+    ignore_errors: true
