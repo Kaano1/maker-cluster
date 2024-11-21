@@ -1,0 +1,17 @@
+---
+# tasks file for calico-metric
+  - name: It moves cluster config /etc/kubernetes to $HOME/.kube/ because kubectl look at this location. 
+    ansible.builtin.shell:
+      cmd: |
+        mkdir -p $HOME/.kube
+        sudo cp /etc/kubernetes/super-admin.conf $HOME/.kube/config
+        sudo chown $(id -u):$(id -g) $HOME/.kube/config
+        chmod 600 $HOME/.kube/config
+
+  - name: 1. Install Calico Network Plugin for Pod Networking
+    ansible.builtin.shell:
+      cmd: kubectl apply -f https://docs.projectcalico.org/manifests/calico.yaml
+    
+  - name: 2. Install Metric Server
+    ansible.builtin.shell:
+      cmd: kubectl apply -f https://raw.githubusercontent.com/techiescamp/kubeadm-scripts/main/manifests/metrics-server.yaml
